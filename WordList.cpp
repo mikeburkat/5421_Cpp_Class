@@ -3,11 +3,20 @@
  *
  *  Created on: May 8, 2014
  *      Author: mike
+ *
+ *
+ *
  */
 
 #include "WordList.h"
 #include <iostream>
 #include <string>
+
+unsigned int size;
+
+unsigned int getSize() {
+	return size;
+}
 
 WordList::WordList(std::string x) {
 	setFileName(x);
