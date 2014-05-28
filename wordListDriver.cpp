@@ -89,14 +89,40 @@ void wordDataTests() {
 
 }
 
+void wordListTests() {
+
+//	WordList wl("test.txt");
+//	string s1 = "first";
+//	wl.addWord(s1, 1);
+//	string s2 = "second";
+//	wl.addWord(s2, 2);
+//	string s3 = "first";
+//	wl.addWord(s3, 1);
+
+	WordList w2("test.txt");
+	string a = "a";
+	string b = "b";
+	string c = "c";
+	string d = "d";
+
+	w2.addWord(b, 1);
+	w2.addWord(d, 2);
+	w2.addWord(a, 3);
+	w2.addWord(c, 4);
+
+	w2.print(cout);
+
+}
+
 
 
 int main(void) {
 	WordList wl("test.txt");
-	//wl.print(cout);
+	wl.print(cout);
 
 	//intListTests();
-	wordDataTests();
+	//wordDataTests();
+	//wordListTests();
 
 	return 0;
 }

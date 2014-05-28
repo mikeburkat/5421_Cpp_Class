@@ -103,6 +103,10 @@ int WordData::compare(const WordData& other) const {
 
 int WordData::compareChars(char one, char two) const {
 //	std::cout << one << " " << two << std::endl;
+
+	one = tolower(one);
+	two = tolower(two);
+
 	if (one == two) {
 		return 0;
 	} else if (one == '\0') {

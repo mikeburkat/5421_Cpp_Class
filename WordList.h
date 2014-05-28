@@ -24,20 +24,21 @@ private:
 
 	WordNode* first;							// A pointer to the first node of the list;
 	WordNode* last;								// A pointer to the last node of the list;
-	static unsigned int size;					// The size of the list
+	static int size;					// The size of the list
 	std::string fileName;
 	void setFileName(std::string);
 	const std::string getFileName() const;
 
-	void loadList();							// Load this list using the words in the input file
-	WordNode* getWordNodeOf();					// Get a pointer to the node whose word data object stores a given word
-	void addWord(std::string, unsigned int);	// Reflect a given word and its corresponding line numbers into this list
+	void loadList();								// Load this list using the words in the input file
+	WordNode* getWordNodeOf(const WordNode&) const;	// Get a pointer to the node whose word data object stores a given word
+public:
+	void addWord(std::string, int);		// Reflect a given word and its corresponding line numbers into this list
 
 
 public:
 	WordList(std::string);
 	std::ostream& print(std::ostream&) const;	// Print the list in the required format
-	static unsigned int getSize();				// Get the size of the list
+	static int getSize();				// Get the size of the list
 
 };
 
