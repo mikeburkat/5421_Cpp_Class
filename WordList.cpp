@@ -29,34 +29,47 @@ WordList::WordList(std::string x) {
 	loadList();
 }
 
+WordList::~WordList() {
+//	std::cout << "WordList Destructor." << std::endl;
+	WordNode* previous = first;
+	WordNode* current = first->next;
+	for (int i = 0; i < size; i++) {
+		delete previous;
+		previous = current;
+		current = current->next;
+	}
+}
+
 void WordList::setFileName(std::string f) {
 	fileName = f;
 }
 
-const std::string WordList::getFileName() const{
+const std::string WordList::getFileName() const {
 	return fileName;
 }
 
-std::ostream& WordList::print(std::ostream& co) const{
+std::ostream& WordList::print(std::ostream& co) const {
 	co << "Word Collection Source File: " << getFileName() << std::endl;
 	co << std::setw(28) << std::setfill('=') << "=" << std::endl;
 	co << std::setfill(' ');
 
 	WordList::WordNode* current = first;
-
+	co << "size: " << size << std::endl;
 	char header = 'A';
 	co << "<" << header << ">" << std::endl;
 
-	for (int i = 0; i < size; i++) {
+	for (int i = 0; header < 'Z';) {
 		const char* const word = current->wordData.getWord();
 
-		if ( tolower(word[0]) > tolower(header) ) {
+		if ( tolower(word[0]) > tolower(header) || i >= size) {
 			header += 1;
 			co << "<" << header << ">" << std::endl;
-			i--;
+			co << i << std::endl;
 		} else {
 			co << current->wordData;
 			current = current->next;
+			i++;
+			co << i << std::endl;
 		}
 	}
 	return co;
@@ -65,21 +78,49 @@ std::ostream& WordList::print(std::ostream& co) const{
 void WordList::loadList() {
 	std::ifstream fin(getFileName());
 
-	if(fin.fail()) {
+	if (fin.fail()) {
 		std::cout << "File open operation failed." << std::endl;
 		return;
 	}
 
 	std::string line, word;
-	int i = 1;
-	while ( getline(fin, line) ) {
+	int j = 1;
+	while (getline(fin, line)) {
 		std::istringstream sin(line);
 
-		while ( sin >> word ) {
+		while (sin >> word) {
 //			std::cout << word << std::endl;
-			addWord(word, i);
+
+			int first = 0;
+			int last = word.length() - 1;
+
+			int i = first;
+			while (i < last) {
+				if (!ispunct(word[i])) {
+					first = i;
+					break;
+				} else {
+					i++;
+				}
+			}
+
+			i = last;
+			while (i > first) {
+				if (ispunct(word[i])) {
+					i--;
+					last = i;
+				} else {
+					break;
+				}
+			}
+
+//      std::cout << "f: " <<first << " l: " <<last<< std::endl;
+			word = word.std::string::substr(first, last - first + 1);
+//      std::cout << word << std::endl;
+
+			addWord(word, j);
 		}
-		i++;
+		j++;
 	}
 	fin.close();
 }
@@ -97,17 +138,17 @@ void WordList::addWord(std::string word, int lineNumber) {
 	}
 //	std::cout << "not found in word list" << std::endl;
 
-	// Createa a new node, and append the line number.
+// Createa a new node, and append the line number.
 	WordList::WordNode* node = new WordList::WordNode(wd);
 	node->wordData.append(lineNumber);
 
 	// Check if the list is empty, then add.
 	if (getSize() == 0) {
-			first = node;
-			last = node;
-			size++;
+		first = node;
+		last = node;
+		size++;
 //			std::cout << "inserted in null list" << std::endl;
-			return;
+		return;
 	}
 
 	// Check if it comes before the first node, then add.
@@ -146,7 +187,8 @@ void WordList::addWord(std::string word, int lineNumber) {
 //	std::cout << "before: " << current->wordData;
 }
 
-WordList::WordNode* WordList::getWordNodeOf(const WordList::WordNode& wd) const {
+WordList::WordNode* WordList::getWordNodeOf(
+		const WordList::WordNode& wd) const {
 
 	WordList::WordNode* current = first;
 	while (current != nullptr) {
@@ -159,5 +201,6 @@ WordList::WordNode* WordList::getWordNodeOf(const WordList::WordNode& wd) const 
 	return nullptr;
 }
 
-WordList::WordNode::WordNode(WordData wd, WordNode* ptrWd) : wordData(wd), next(ptrWd) {
+WordList::WordNode::WordNode(WordData wd, WordNode* ptrWd) :
+		wordData(wd), next(ptrWd) {
 }

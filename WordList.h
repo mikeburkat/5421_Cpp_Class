@@ -37,6 +37,7 @@ public:
 
 public:
 	WordList(std::string);
+	~WordList();
 	std::ostream& print(std::ostream&) const;	// Print the list in the required format
 	static int getSize();				// Get the size of the list
 

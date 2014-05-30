@@ -21,6 +21,7 @@ WordData::WordData(std::string word) {
 }
 
 WordData::WordData(const WordData& wd) {
+  // std::cout<< "Copy Construct: Word Data" <<std::endl;
 	copy(wd);
 }
 

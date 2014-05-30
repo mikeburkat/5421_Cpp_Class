@@ -21,6 +21,7 @@ IntList::IntList(int sizeParam) {
 //---------------------------------------------------------
 
 IntList::IntList(const IntList& iL) {
+	// std::cout<< "Copy Construct: IntList" <<std::endl;
 	copy(iL);
 }
 
