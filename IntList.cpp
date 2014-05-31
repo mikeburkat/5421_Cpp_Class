@@ -157,3 +157,36 @@ bool IntList::isFull() const {
 }
 
 //---------------------------------------------------------
+
+void IntList::intListTests() {
+	std::cout << "=======INT LIST TESTS======="<<std::endl;
+	std::cout << "test append and capacity doubling"<<std::endl;
+	IntList intList;
+	std::cout << intList << "capacity: " << intList.getCapacity()<< std::endl;
+	intList.append(1);
+	std::cout << intList << "capacity: " << intList.getCapacity()<< std::endl;
+	intList.append(2);
+	std::cout << intList << "capacity: " << intList.getCapacity()<< std::endl;
+	intList.append(3);
+	std::cout << intList << "capacity: " << intList.getCapacity()<< std::endl;
+	intList.append(4);
+	std::cout << intList << "capacity: " << intList.getCapacity()<< std::endl;
+
+	std::cout << "test prevent appending same line again"<< std::endl;
+	intList.append(4);
+	std::cout << intList << "capacity: " << intList.getCapacity()<< std::endl;
+	std::cout << std::endl;
+
+	std::cout << "test copy constructor"<< std::endl;
+	IntList intList2(intList);
+	std::cout << intList << "capacity: " << intList.getCapacity() << std::endl;
+	std::cout << std::endl;
+
+	std::cout << "test assignment operator"<< std::endl;
+	IntList intList3;
+	intList3 = intList2;
+	std::cout << intList << "capacity: " << intList.getCapacity() << std::endl;
+	std::cout << std::endl;
+}
+
+//---------------------------------------------------------

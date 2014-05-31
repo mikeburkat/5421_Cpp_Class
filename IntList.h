@@ -14,11 +14,10 @@ class IntList {
 	friend std::ostream& operator<<(std::ostream&, const IntList&); // overloaded stream insertion operator
 
 public:
-	explicit IntList(int = 1); 	// creates a list of a given size defaults to 1
-	IntList(const IntList&); 	// copy constructor
-	void operator=(const IntList&); 	// overloaded assignment operator
-	~IntList();
-
+	explicit IntList(int = 1); 		// creates a list of a given size defaults to 1
+	IntList(const IntList&); 		// copy constructor
+	void operator=(const IntList&); // overloaded assignment operator
+	~IntList();						// Destructor
 
 	bool isEmpty() const; 			// Determine whether the list is empty.
 	bool isFull() const;			// Determine whether the list is full.
@@ -29,6 +28,7 @@ public:
 	const int getSize() const; 		// Get size of the list.
 	const int getCapacity() const; 	// Get capacity of the list.
 	const int* const getPtr(); 		// Get a read-only pointer to the underlying array.
+	void intListTests();
 
 private:
 	int* intPtr;		// A pointer to a dynamically allocated array of integer elements

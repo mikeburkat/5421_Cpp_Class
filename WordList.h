@@ -28,17 +28,18 @@ private:
 	std::string fileName;
 	void setFileName(std::string);
 	const std::string getFileName() const;
-
+	void copy(const WordList&);
 	void loadList();								// Load this list using the words in the input file
-	WordNode* getWordNodeOf(const WordNode&) const;	// Get a pointer to the node whose word data object stores a given word
-public:
+	WordNode* getWordNodeOf(const WordData&) const;	// Get a pointer to the node whose word data object stores a given word
 	void addWord(std::string, int);		// Reflect a given word and its corresponding line numbers into this list
 
 
 public:
-	WordList(std::string);
-	~WordList();
-	std::ostream& print(std::ostream&) const;	// Print the list in the required format
+	WordList(std::string);				//	Constructor
+	WordList(const WordList&);			//	Copy Constructor
+	void operator=(const WordList&);	//	Assignment operator
+	~WordList();						//	Destructor
+	std::ostream& print(std::ostream&) const;// Print the list in the required format
 	static int getSize();				// Get the size of the list
 
 };
