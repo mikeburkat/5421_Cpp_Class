@@ -24,7 +24,9 @@ WordList::WordList(std::string x) {
 	setFileName(x);
 	first = nullptr;
 	last = nullptr;
-	loadList();
+
+	// the list is loaded in the print function, since requirement
+	// is to create an empty list.
 }
 
 //---------------------------------------------------------
@@ -103,7 +105,10 @@ int WordList::getSize() {
 
 //---------------------------------------------------------
 
-std::ostream& WordList::print(std::ostream& co) const {
+std::ostream& WordList::print(std::ostream& co) {
+	// The list has to be loaded
+	loadList();
+
 	co << "Word Collection Source File: " << getFileName() << std::endl;
 	co << std::setw(28) << std::setfill('=') << "=" << std::endl;
 	co << std::setfill(' ');
@@ -151,6 +156,7 @@ void WordList::loadList() {
 		while (sin >> word) {
 //			std::cout << word << std::endl;
 
+			// find first and last char that are not punctuation.
 			int first = 0;
 			int last = word.length() - 1;
 

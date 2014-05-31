@@ -39,7 +39,7 @@ public:
 	WordList(const WordList&);			//	Copy Constructor
 	void operator=(const WordList&);	//	Assignment operator
 	~WordList();						//	Destructor
-	std::ostream& print(std::ostream&) const;// Print the list in the required format
+	std::ostream& print(std::ostream&); // Print the list in the required format after first loading it.
 	static int getSize();				// Get the size of the list
 
 };
