@@ -15,7 +15,7 @@ using namespace std;
 
 
 int main(void) {
-	WordList wl("test.txt");
+	WordList wl("input.txt");
 	wl.print(cout);
 
 //	// Testing I wrote to verify that I my program met the requirement.
