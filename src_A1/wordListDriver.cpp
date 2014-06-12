@@ -14,16 +14,16 @@
 using namespace std;
 
 
-int main(void) {
-	WordList wl("src_A1/input.txt");
-	wl.print(cout);
-
-//	// Testing I wrote to verify that I my program met the requirement.
-//	WordData wd("tests", 0);
-//	wd.wordDataTests();
+//int main(void) {
+//	WordList wl("src_A1/input.txt");
+//	wl.print(cout);
 //
-//	IntList il;
-//	il.intListTests();
-
-	return 0;
-}
+////	// Testing I wrote to verify that I my program met the requirement.
+////	WordData wd("tests", 0);
+////	wd.wordDataTests();
+////
+////	IntList il;
+////	il.intListTests();
+//
+//	return 0;
+//}
