@@ -19,9 +19,9 @@ void wordDataTests() {
 	w1.append(3);
 	cout << w1 << endl;
 
-	cout << w1.compare("second") << endl;
-	cout << w1.compare("first") << endl;
-	cout << w1.compare("another") << endl;
+	cout << w1.compare("second") << endl;	// 1
+	cout << w1.compare("first") << endl;	// 0
+	cout << w1.compare("another") << endl;	// -1
 
 }
 
@@ -29,7 +29,12 @@ void wordDataTests() {
 int main(void) {
 	WordList wordlist("src_A2/Seuss.txt");
 
-	wordDataTests();
+	wordlist.print(cout);
+	wordlist.print(cout, "Wh");
+	wordlist.print(cout, "the");
+
+
+//	wordDataTests();
 
 //	ofstream fout("SeussWordList.txt");
 //	assert(fout.good());

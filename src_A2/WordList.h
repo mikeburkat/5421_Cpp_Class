@@ -51,7 +51,6 @@ public:
 	std::ofstream& print(std::ofstream&, std::string); 	// Print the list in the required format.
 	static int getSize();				// Get the size of the list
 
-
 };
 
 #endif /* WORDLIST_H_ */
