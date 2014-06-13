@@ -7,6 +7,7 @@
 
 #include <string>
 #include <vector>
+#include <list>
 #include <iostream>
 #include <fstream>
 #include <assert.h>
@@ -15,27 +16,7 @@
 #define WORDLIST_H_
 
 class WordList {
-public: // should be made private later
-	static int size;					// The size of the list
-	std::string fileName;
-	void setFileName(std::string);
-	const std::string getFileName() const;
-	void copy(const WordList&);
-	void loadList();								// Load this list using the words in the input file
-	std::string getWordNodeOf(const std::string) const;	// Get a pointer to the node whose word data object stores a given word
-	void addWord(std::string, int);		// Reflect a given word and its corresponding line numbers into this list
-public:
-	WordList(std::string);				//	Constructor
-	WordList(const WordList&);			//	Copy Constructor
-	void operator=(const WordList&);	//	Assignment operator
-	~WordList();						//	Destructor
-	std::ostream& print(std::ostream&);	// Print list to cout.
-	std::ostream& print(std::ostream&, std::string);		// Print list to cout.
-	std::ofstream& print(std::ofstream&); 	// Print the list in the required format.
-	std::ofstream& print(std::ofstream&, std::string); 	// Print the list in the required format.
-	static int getSize();				// Get the size of the list
-
-// Move to private later
+public: // Move to private later
 	class WordData {
 	friend std::ostream& operator<<(std::ostream&, const WordData&); // overloaded stream insertion operator
 	friend std::ofstream& operator<<(std::ofstream&, const WordData&); // overloaded stream insertion operator
@@ -51,10 +32,24 @@ public:
 		std::string word;
 		int frequency;
 		std::vector<int> lineNumbers;
-
-
 	};
 
+public: // should be made private later
+	static int size;					// The size of the list
+	std::list<WordData> wordList;
+	std::string fileName;
+	void setFileName(std::string);
+	const std::string getFileName() const;
+	void loadList();								// Load this list using the words in the input file
+	std::string getWordNodeOf(const std::string) const;	// Get a pointer to the node whose word data object stores a given word
+	void addWord(std::string, int);		// Reflect a given word and its corresponding line numbers into this list
+public:
+	WordList(std::string);				//	Constructor
+	std::ostream& print(std::ostream&);	// Print list to cout.
+	std::ostream& print(std::ostream&, std::string);		// Print list to cout.
+	std::ofstream& print(std::ofstream&); 	// Print the list in the required format.
+	std::ofstream& print(std::ofstream&, std::string); 	// Print the list in the required format.
+	static int getSize();				// Get the size of the list
 
 
 };
