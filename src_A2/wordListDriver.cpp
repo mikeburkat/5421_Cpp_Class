@@ -14,7 +14,7 @@ using namespace std;
 
 
 int main(void) {
-	WordList wordlist("src_A2/Seuss.txt");
+	WordList wordlist("Seuss.txt");
 
 	wordlist.print(cout);
 	wordlist.print(cout, "Wh");
