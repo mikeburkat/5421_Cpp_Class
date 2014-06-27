@@ -10,44 +10,36 @@
 
 #include "WordList.h"
 #include <iostream>
-#include <iomanip>
 #include <fstream>
 #include <sstream>
+#include <iomanip>
 #include <string>
 #include <list>
 #include <algorithm>
 
-int WordList::size = 0;
 
 //---------------------------------------------------------
 
-WordList::WordList(std::string x) {
-	setFileName(x);
-	loadList();
-}
-
-//---------------------------------------------------------
-
-void WordList::setFileName(std::string f) {
-	fileName = f;
+WordList::WordList(std::string x) : fileName(x) {
+	this->loadList();
 }
 
 //---------------------------------------------------------
 
 const std::string WordList::getFileName() const {
-	return fileName;
+	return this->fileName;
 }
 
 //---------------------------------------------------------
 
-int WordList::getSize() {
-	return size;
+const int WordList::getSize() {
+	return this->wordList.size();
 }
 
 //---------------------------------------------------------
 
-std::ostream& WordList::print(std::ostream& co) {
-	co << "Word Collection Source File: " << getFileName() << std::endl;
+std::ostream& WordList::printAll(std::ostream& co) {
+	co << "Word Collection Source File: " << this->getFileName() << std::endl;
 	co << std::setw(28) << std::setfill('=') << "=" << std::endl;
 	co << std::setfill(' ');
 
@@ -55,8 +47,8 @@ std::ostream& WordList::print(std::ostream& co) {
 	co << "<" << header << ">" << std::endl;
 
 	int here = 0;
-	for (std::list<WordData>::iterator it = wordList.begin();
-			it != wordList.end();) {
+	for (std::list<WordData>::iterator it = this->wordList.begin();
+			it != this->wordList.end();) {
 
 		const std::string word = it->getWord();
 
@@ -65,11 +57,10 @@ std::ostream& WordList::print(std::ostream& co) {
 			co << "<" << header << ">" << std::endl;
 			here++;
 		} else {
-			co << *it;
+			it->printWord(co);
 			it++;
 		}
 	}
-//	co << "here: " << here << std::endl;
 
 	while (header < 'Z') {
 		header += 1;
@@ -78,20 +69,24 @@ std::ostream& WordList::print(std::ostream& co) {
 
 	co << std::setw(28) << std::setfill('=') << "=" << std::endl;
 	co << std::setfill(' ');
-
 	return co;
 }
 
 //---------------------------------------------------------
 
 std::ostream& WordList::print(std::ostream& co, std::string prefix) {
-	co << "Word Collection Source File: " << getFileName() << std::endl;
+
+	if (prefix.empty()) {
+		return this->printAll(co);
+	}
+
+	co << "Word Collection Source File: " << this->getFileName() << std::endl;
 	co << "Words that begin with \"" << prefix << "\"" << std::endl;
 	co << std::setw(28) << std::setfill('=') << "=" << std::endl;
 	co << std::setfill(' ');
 
-	for (std::list<WordData>::iterator it = wordList.begin();
-			it != wordList.end(); it++) {
+	for (std::list<WordData>::iterator it = this->wordList.begin();
+			it != this->wordList.end(); it++) {
 		const std::string word = it->getWord();
 		std::string preWord = word.substr(0, prefix.length());
 		for (char& c : preWord)
@@ -100,34 +95,18 @@ std::ostream& WordList::print(std::ostream& co, std::string prefix) {
 			c = std::tolower(c);
 
 		if (preWord.compare(prefix) == 0) {
-			co << *it;
+			it->printWord(co);
 		}
 	}
-
 	co << std::setw(28) << std::setfill('=') << "=" << std::endl;
 	co << std::setfill(' ');
-
-	return co;
-}
-
-//---------------------------------------------------------
-
-std::ofstream& WordList::print(std::ofstream& co) {
-
-	return co;
-}
-
-//---------------------------------------------------------
-
-std::ofstream& WordList::print(std::ofstream& co, std::string s) {
-
 	return co;
 }
 
 //---------------------------------------------------------
 
 void WordList::loadList() {
-	std::ifstream fin(getFileName());
+	std::ifstream fin(this->getFileName());
 
 	if (fin.fail()) {
 		std::cout << "File open operation failed." << std::endl;
@@ -160,12 +139,8 @@ void WordList::loadList() {
 			if (first == last && !isalpha(word[first])) {
 				continue;
 			}
-
-//			std::cout << "f: " <<first << " l: " <<last<< std::endl;
 			word = word.std::string::substr(first, last - first + 1);
-//			std::cout << word << std::endl;
-
-			addWord(word, j);
+			this->addWord(word, j);
 		}
 		j++;
 	}
@@ -177,38 +152,25 @@ void WordList::loadList() {
 void WordList::addWord(std::string newWord, int lineNumber) {
 	int comp;
 
-	for (std::list<WordData>::iterator it = wordList.begin();
-			it != wordList.end(); it++) {
+	for (std::list<WordData>::iterator it = this->wordList.begin();
+			it != this->wordList.end(); it++) {
 		comp = it->compare(newWord);
 		if (comp == 0) { // if equal then the word is in the list so append line Number to it.
-//			std::cout << *it;
 			it->append(lineNumber);
 			return;
 		} else if (comp < 0) { // if the word is now smaller than iterator stop and insert before the pointed word.
-//			std::cout << *it << newWord << std::endl << std::endl;
-			wordList.insert(it, WordData(newWord, lineNumber));
-			size++;
+			this->wordList.insert(it, WordData(newWord, lineNumber));
 			return;
 		}
 	}
-	wordList.push_back(WordData(newWord, lineNumber));
-
+	this->wordList.push_back(WordData(newWord, lineNumber));
 }
 
 //---------------------------------------------------------
 
-std::string WordList::getWordNodeOf(const std::string) const {
-
-	return "";
-}
-
-//---------------------------------------------------------
-
-WordList::WordData::WordData(std::string s, int line) {
-	word = s;
-	lineNumbers.push_back(line);
-	frequency = 0;
-	frequency++;
+WordList::WordData::WordData(std::string s, int line) : word(s), frequency(0) {
+	this->lineNumbers.push_back(line);
+	this->frequency++;
 }
 
 //---------------------------------------------------------
@@ -232,19 +194,19 @@ const std::vector<int>& WordList::WordData::getLinesNumbers() const {
 //---------------------------------------------------------
 
 void WordList::WordData::append(int line) {
-	frequency++;
+	this->frequency++;
 	// since we read lines sequentially, we just need to check the last
 	// number in the list to see if it's on the same line, if it is then return
 	// else just add the new line to the back
-	if (line == lineNumbers.back())
+	if (line == this->lineNumbers.back())
 		return;
-	lineNumbers.push_back(line);
+	this->lineNumbers.push_back(line);
 }
 
 //---------------------------------------------------------
 
 int WordList::WordData::compare(const std::string other) const {
-	std::string wordLower = word;
+	std::string wordLower = this->word;
 	std::string otherLower = other;
 	for (char& c : wordLower)
 		c = std::tolower(c);
@@ -256,14 +218,15 @@ int WordList::WordData::compare(const std::string other) const {
 
 //---------------------------------------------------------
 
-std::ostream& operator<<(std::ostream& co, const WordList::WordData& wd) {
-	co << std::right << std::setw(15) << wd.getWord();
-	co << "  (" << wd.getFrequency() << ")";
-	std::vector<int> lineNums = wd.getLinesNumbers();
+std::ostream& WordList::WordData::printWord(std::ostream& co) const{
+	co << std::right << std::setw(15) << this->getWord();
+	co << "  (" << this->getFrequency() << ")";
+	std::vector<int> lineNums = this->getLinesNumbers();
 	for (int i : lineNums)
 		co << " " << i;
-	co << std::endl;
+	co << std::endl << std::endl;
 
 	return co;
 }
 
+//---------------------------------------------------------
