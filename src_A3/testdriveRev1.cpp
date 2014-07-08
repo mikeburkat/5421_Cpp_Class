@@ -18,7 +18,7 @@ int main() {
 
 	cout << f4 << endl;
 
-//	test();
+	test();
 	return 0;
 }
 
@@ -200,6 +200,7 @@ int test()
    cout << "ok\n\n";
 
    cout << "testing operator>> with cin >> f;" << '\n';
+// 1 + ((10/100) - (100)/((1000))) + 1/2*1/3*2/1*3/1 - 1/9
    Fraction f;
    cin >> f;
    cout << "f : " << f << '\n';

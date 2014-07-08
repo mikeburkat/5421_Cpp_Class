@@ -7,6 +7,7 @@
 
 
 #include <queue>
+#include <stack>
 #include <string>
 #include <iostream>
 
@@ -31,6 +32,7 @@ public:
 
 	static std::queue<std::string> Tokenize(const std::string& infixExpression);
 	static Fraction evaluateInfix(std::queue<std::string>& infixQueue);
+	static void evaluate(std::stack<Fraction>&, std::stack<std::string>&);
 
 	static int precedence(std::string);
 	static long gcd(long, long);

@@ -6,10 +6,14 @@
  */
 
 #include <queue>
+#include <stack>
 #include <string>
 #include <stdio.h>
+#include <sstream>
 #include <iostream>
 #include "Fraction.h"
+
+
 
 Fraction::Fraction() :
 		numerator(0), denominator(1) {
@@ -34,13 +38,13 @@ Fraction::Fraction(long num, long denum) :
 //-----------------------------------------------------------------
 
 Fraction::Fraction(const std::string& expression) {
-	std::cout << expression << std::endl;
+	std::cout  << "const string& ctor: " << expression << std::endl;
 	std::queue<std::string> tokens = Tokenize(expression);
 
-	while (!tokens.empty()) {
-		std::cout << tokens.back() << std::endl;
-		tokens.pop();
-	}
+	Fraction result = evaluateInfix(tokens);
+
+	setNumerator(result.getNumerator());
+	setDenominator(result.getDenominator());
 
 }
 
@@ -53,9 +57,10 @@ Fraction::Fraction(const char* expression) {
 
 	std::queue<std::string> tokens = Tokenize(infix);
 
-	evaluateInfix(tokens);
+	Fraction result = evaluateInfix(tokens);
 
-
+	setNumerator(result.getNumerator());
+	setDenominator(result.getDenominator());
 }
 
 //-----------------------------------------------------------------
@@ -95,12 +100,50 @@ void Fraction::setDenominator(long denum) {
 std::queue<std::string> Fraction::Tokenize(const std::string& infixExpression) {
 	std::queue<std::string> tokens;
 
-	std::cout << "infix: " <<  infixExpression << std::endl;
+	std::cout << "infix: " << infixExpression << std::endl;
 
-	for (auto c : infixExpression) {
-		std::string s;
-		s += c;
-		tokens.push(s);
+	std::istringstream exs(infixExpression);
+
+	while (exs.good()) {
+
+		std::string toks;
+		exs >> toks;
+		std::cout << "tok: " << toks << std::endl;
+
+		std::istringstream tok(toks);
+
+		char loneOp = tok.peek();
+
+		if (loneOp == '+' || loneOp == '-') {
+			char operation;
+			tok >> operation;
+			std::string s;
+			s += operation;
+			std::cout << "lone op: " << s << std::endl;
+			tokens.push(s);
+			continue;
+		}
+
+		while (tok.good()) {
+			long operand;
+			tok >> operand;
+
+			if (!tok.fail()) {
+				std::cout << "was long: " << operand << std::endl;
+				std::ostringstream out;
+				out << operand;
+				tokens.push(out.str());
+			} else {
+				std::cout << "long failed: ";
+				tok.clear();
+				char operation;
+				tok >> operation;
+				std::string s;
+				s += operation;
+				std::cout << s << std::endl;
+				tokens.push(s);
+			}
+		}
 	}
 
 	return tokens;
@@ -110,8 +153,108 @@ std::queue<std::string> Fraction::Tokenize(const std::string& infixExpression) {
 
 Fraction Fraction::evaluateInfix(std::queue<std::string>& infixQueue) {
 
+	std::stack<Fraction> operands;
+	std::stack<std::string> operators;
 
+	while (!infixQueue.empty()) {
+		std::string token = infixQueue.front();
+		infixQueue.pop();
+		std::cout << "Next Token: " << token << std::endl;
 
+		long num = 0;
+		std::istringstream testNumber(token);
+		testNumber >> num;
+
+		if (!testNumber.fail()) {
+			std::cout << "it's a number" << std::endl;
+			operands.push(Fraction(num));
+
+		} else if (token == "+" || token == "-" || token == "*"
+				|| token == "/") {
+			std::cout << "it's an operator" << std::endl;
+
+			while (!operators.empty()
+					&& precedence(operators.top()) > precedence(token)) {
+				evaluate(operands, operators);
+				std::cout << "top operand = " << operands.top() << std::endl;
+			}
+			operators.push(token);
+
+		} else if (token == "(") {
+			std::cout << "it's an open parenthesis" << std::endl;
+			operators.push(token);
+
+		} else if (token == ")") {
+			std::cout << "it's a close parenthesis" << std::endl;
+			while (!operators.empty() && operators.top() != "(") {
+				evaluate(operands, operators);
+				std::cout << "top operand = " << operands.top() << std::endl;
+			}
+
+			if (operators.empty()) {
+				std::cout << " paranthesis missing error" << std::endl;
+			} else {
+				std::cout << " pop a ( " << std::endl;
+				operators.pop();
+			}
+		}
+
+	}
+
+	std::cout << "done with queue" << std::endl;
+
+	std::cout << "op stack: " << !operators.empty() << std::endl;
+	while (!operators.empty()) {
+		evaluate(operands, operators);
+		std::cout << "top operand = " << operands.top() << std::endl;
+	}
+
+	return operands.top();
+
+}
+
+//-----------------------------------------------------------------
+
+void Fraction::evaluate(std::stack<Fraction>& operands,
+		std::stack<std::string>& operators) {
+
+	std::cout << "fractions: " << std::endl;
+	for (auto dump = operands; !dump.empty(); dump.pop()) {
+		std::cout << dump.top();
+	}
+
+	std::cout << "operators: " << std::endl;
+	for (auto dump = operators; !dump.empty(); dump.pop()) {
+		std::cout << dump.top() << std::endl;;
+	}
+
+	Fraction two = operands.top();
+	operands.pop();
+	Fraction one = operands.top();
+	operands.pop();
+	std::string op = operators.top();
+	operators.pop();
+
+	std::cout << "op: " << op << std::endl;
+
+	if (op == "+") {
+		std::cout << one << " + " << two << " = " << (one + two) << std::endl;
+		operands.push(one + two);
+	} else if (op == "-") {
+		std::cout << two;
+		std::cout << " - " << one;
+		std::cout << " = " << std::endl;
+		std::cout << (one - two) << std::endl;
+		operands.push(one - two);
+	} else if (op == "*") {
+		std::cout << one << " * " << two << " = " << (one * two) << std::endl;
+		operands.push(one * two);
+	} else if (op == "/") {
+		std::cout << one << " / " << two << " = " << (one / two) << std::endl;
+		operands.push(one / two);
+	} else {
+		std::cout << "error should not get here" << std::endl;
+	}
 }
 
 //-----------------------------------------------------------------
@@ -158,6 +301,11 @@ long Fraction::gcd(long one, long two) {
 //-----------------------------------------------------------------
 
 void Fraction::normalize() {
+	if (this->getNumerator() == 0) {
+		this->setNumerator(0);
+		this->setDenominator(1);
+		return;
+	}
 	long common = Fraction::gcd(this->getNumerator(), this->getDenominator());
 	this->setNumerator(this->getNumerator() / common);
 	this->setDenominator(this->getDenominator() / common);
@@ -363,6 +511,14 @@ bool operator>=(const Fraction& lhs, const Fraction& rhs) {
 //-----------------------------------------------------------------
 
 std::istream& operator>>(std::istream& in, Fraction& rhs) {
+	std::cout << "Enter Fraction: ";
+	std::string s;
+	std::getline(in, s);
+
+	Fraction f(s);
+
+	rhs.setNumerator(f.getNumerator());
+	rhs.setDenominator(f.getDenominator());
 
 	return in;
 }
