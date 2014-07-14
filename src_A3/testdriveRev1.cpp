@@ -5,24 +5,7 @@
 using namespace std;
 #include "Fraction.h"
 
-int test();
-
-int main() {
-	Fraction f0;
-	Fraction f1(-3);
-	Fraction f3(14, -21);
-
-	cout << f0 << f1 << f3 << endl;
-
-	Fraction f4("3/5");
-
-	cout << f4 << endl;
-
-	test();
-	return 0;
-}
-
-int test()
+int main()
 {
    cout << "Test Fraction and Fractional Computation" << '\n';
    cout << "----------------------------------------\n\n";
@@ -200,7 +183,7 @@ int test()
    cout << "ok\n\n";
 
    cout << "testing operator>> with cin >> f;" << '\n';
-// 1 + ((10/100) - (100)/((1000))) + 1/2*1/3*2/1*3/1 - 1/9
+// 1 +((10/100) -(100)/((1000))) + 1/2*1/3*2/1*3/1 - 1/9
    Fraction f;
    cin >> f;
    cout << "f : " << f << '\n';

@@ -51,9 +51,7 @@ Fraction::Fraction(const std::string& expression) {
 //-----------------------------------------------------------------
 
 Fraction::Fraction(const char* expression) {
-	std::cout << "const char* ctor: " << expression << std::endl;
 	std::string infix(expression);
-	std::cout << "string infix: " << infix << std::endl;
 
 	std::queue<std::string> tokens = Tokenize(infix);
 
@@ -100,50 +98,31 @@ void Fraction::setDenominator(long denum) {
 std::queue<std::string> Fraction::Tokenize(const std::string& infixExpression) {
 	std::queue<std::string> tokens;
 
-	std::cout << "infix: " << infixExpression << std::endl;
+	bool lastWasNumber = false;
+	std::string num;
+	for (auto c : infixExpression) {
 
-	std::istringstream exs(infixExpression);
-
-	while (exs.good()) {
-
-		std::string toks;
-		exs >> toks;
-		std::cout << "tok: " << toks << std::endl;
-
-		std::istringstream tok(toks);
-
-		char loneOp = tok.peek();
-
-		if (loneOp == '+' || loneOp == '-') {
-			char operation;
-			tok >> operation;
-			std::string s;
-			s += operation;
-			std::cout << "lone op: " << s << std::endl;
-			tokens.push(s);
-			continue;
+		// parse a multi-digit number
+		if (lastWasNumber && isdigit(c)) {
+			num += c;
+		} else if (!lastWasNumber && isdigit(c)) {
+			num = "";
+			num += c;
+			lastWasNumber = true;
+		} else if (lastWasNumber && !isdigit(c)) {
+			lastWasNumber = false;
+			tokens.push(num);
 		}
-
-		while (tok.good()) {
-			long operand;
-			tok >> operand;
-
-			if (!tok.fail()) {
-				std::cout << "was long: " << operand << std::endl;
-				std::ostringstream out;
-				out << operand;
-				tokens.push(out.str());
-			} else {
-				std::cout << "long failed: ";
-				tok.clear();
-				char operation;
-				tok >> operation;
-				std::string s;
-				s += operation;
-				std::cout << s << std::endl;
-				tokens.push(s);
-			}
+		// check for operator
+		if (c == '+' || c == '-' || c == '/' || c == '*' || c == '(' || c == ')') {
+			std::string op;
+			op += c;
+			tokens.push(op);
 		}
+	}
+	// insert the last number
+	if (num != "") {
+		tokens.push(num);
 	}
 
 	return tokens;
@@ -159,54 +138,43 @@ Fraction Fraction::evaluateInfix(std::queue<std::string>& infixQueue) {
 	while (!infixQueue.empty()) {
 		std::string token = infixQueue.front();
 		infixQueue.pop();
-		std::cout << "Next Token: " << token << std::endl;
 
 		long num = 0;
 		std::istringstream testNumber(token);
 		testNumber >> num;
 
 		if (!testNumber.fail()) {
-			std::cout << "it's a number" << std::endl;
 			operands.push(Fraction(num));
 
 		} else if (token == "+" || token == "-" || token == "*"
 				|| token == "/") {
-			std::cout << "it's an operator" << std::endl;
 
 			while (!operators.empty()
 					&& precedence(operators.top()) > precedence(token)) {
 				evaluate(operands, operators);
-				std::cout << "top operand = " << operands.top() << std::endl;
 			}
 			operators.push(token);
 
 		} else if (token == "(") {
-			std::cout << "it's an open parenthesis" << std::endl;
 			operators.push(token);
 
 		} else if (token == ")") {
-			std::cout << "it's a close parenthesis" << std::endl;
 			while (!operators.empty() && operators.top() != "(") {
 				evaluate(operands, operators);
-				std::cout << "top operand = " << operands.top() << std::endl;
 			}
 
 			if (operators.empty()) {
 				std::cout << " paranthesis missing error" << std::endl;
 			} else {
-				std::cout << " pop a ( " << std::endl;
 				operators.pop();
 			}
 		}
 
 	}
 
-	std::cout << "done with queue" << std::endl;
 
-	std::cout << "op stack: " << !operators.empty() << std::endl;
 	while (!operators.empty()) {
 		evaluate(operands, operators);
-		std::cout << "top operand = " << operands.top() << std::endl;
 	}
 
 	return operands.top();
@@ -218,15 +186,16 @@ Fraction Fraction::evaluateInfix(std::queue<std::string>& infixQueue) {
 void Fraction::evaluate(std::stack<Fraction>& operands,
 		std::stack<std::string>& operators) {
 
-	std::cout << "fractions: " << std::endl;
-	for (auto dump = operands; !dump.empty(); dump.pop()) {
-		std::cout << dump.top();
-	}
-
-	std::cout << "operators: " << std::endl;
-	for (auto dump = operators; !dump.empty(); dump.pop()) {
-		std::cout << dump.top() << std::endl;;
-	}
+// Dump the contents of the stacks
+//	std::cout << "fractions: " << std::endl;
+//	for (auto dump = operands; !dump.empty(); dump.pop()) {
+//		std::cout << dump.top();
+//	}
+//
+//	std::cout << "operators: " << std::endl;
+//	for (auto dump = operators; !dump.empty(); dump.pop()) {
+//		std::cout << dump.top() << std::endl;;
+//	}
 
 	Fraction two = operands.top();
 	operands.pop();
@@ -235,25 +204,14 @@ void Fraction::evaluate(std::stack<Fraction>& operands,
 	std::string op = operators.top();
 	operators.pop();
 
-	std::cout << "op: " << op << std::endl;
-
 	if (op == "+") {
-		std::cout << one << " + " << two << " = " << (one + two) << std::endl;
 		operands.push(one + two);
 	} else if (op == "-") {
-		std::cout << two;
-		std::cout << " - " << one;
-		std::cout << " = " << std::endl;
-		std::cout << (one - two) << std::endl;
 		operands.push(one - two);
 	} else if (op == "*") {
-		std::cout << one << " * " << two << " = " << (one * two) << std::endl;
 		operands.push(one * two);
 	} else if (op == "/") {
-		std::cout << one << " / " << two << " = " << (one / two) << std::endl;
 		operands.push(one / two);
-	} else {
-		std::cout << "error should not get here" << std::endl;
 	}
 }
 
@@ -526,7 +484,15 @@ std::istream& operator>>(std::istream& in, Fraction& rhs) {
 //-----------------------------------------------------------------
 
 std::ostream& operator<<(std::ostream& out, const Fraction& rhs) {
-	out << rhs.getNumerator() << "/" << rhs.getDenominator() << std::endl;
+	if (rhs.getDenominator() == 1) {
+		out << rhs.getNumerator();
+	} else if (rhs.getNumerator() == rhs.getDenominator()) {
+		out << 1;
+	} else if (rhs.getNumerator() > rhs.getDenominator()) {
+		out << rhs.getNumerator() / rhs.getDenominator() << " + " << rhs.getNumerator() % rhs.getDenominator() << "/" << rhs.getDenominator();
+	} else {
+		out << rhs.getNumerator() << "/" << rhs.getDenominator();
+	}
 	return out;
 }
 
