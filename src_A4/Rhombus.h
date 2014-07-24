@@ -8,6 +8,9 @@
 #ifndef RHOMBUS_H_
 #define RHOMBUS_H_
 
+#include "Canvas.h"
+#include "Shape.h"
+
 class Rhombus: public Shape {
 
 private:
@@ -25,7 +28,7 @@ public:
 	virtual int scrPerimeter() override;
 	virtual int hExtent() override;
 	virtual int vExtent() override;
-	virtual void draw() override;
+	virtual void draw(int c, int r, Canvas& canvas, char ch = '*') const override;
 
 };
 

@@ -8,6 +8,9 @@
 #ifndef RECTANGLE_H_
 #define RECTANGLE_H_
 
+#include "Canvas.h"
+#include "Shape.h"
+
 class Rectangle: public Shape {
 
 private:
@@ -28,7 +31,7 @@ public:
 	virtual int scrPerimeter() override;
 	virtual int hExtent() override;
 	virtual int vExtent() override;
-	virtual void draw() override;
+	virtual void draw(int c, int r, Canvas& canvas, char ch = '*') const override;
 
 };
 

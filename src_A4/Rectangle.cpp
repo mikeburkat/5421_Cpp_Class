@@ -5,7 +5,10 @@
  *      Author: Mike
  */
 
-Rectangle::Rectangle(int w, int h, std::string description) : genericName("Rectangle"), description(description), w(w), h(h){
+#include "Rectangle.h"
+#include "Canvas.h"
+
+Rectangle::Rectangle(int w, int h, std::string description) : Shape("Rectangle", description), w(w), h(h){
 
 }
 
@@ -18,18 +21,18 @@ void Rectangle::setH(int h) {
 	this->h = h;
 }
 
-int Rectangle::getV() const {
+int Rectangle::getW() const {
 	return w;
 }
 
-void Rectangle::setV(int v) {
+void Rectangle::setW(int w) {
 	this->w = w;
 }
 
 void Rectangle::scale(int n) {
 	if (getH() + n > 0 && getW() + n > 0) {
 		setH(getH() + n);
-		setV(getW() + n);
+		setW(getW() + n);
 	}
 }
 
@@ -38,7 +41,7 @@ double Rectangle::geoArea() {
 }
 
 double Rectangle::geoPerimeter() {
-	return 2 ( getH() + getW() );
+	return 2 * ( getH() + getW() );
 }
 
 int Rectangle::scrArea() {
@@ -46,7 +49,7 @@ int Rectangle::scrArea() {
 }
 
 int Rectangle::scrPerimeter() {
-	return 2 ( getH() + getW() ) - 4;
+	return 2 * ( getH() + getW() ) - 4;
 }
 
 int Rectangle::hExtent() {
@@ -57,5 +60,5 @@ int Rectangle::vExtent() {
 	getH();
 }
 
-void Rectangle::draw() {
+void Rectangle::draw(int c, int r, Canvas& canvas, char ch) const {
 }

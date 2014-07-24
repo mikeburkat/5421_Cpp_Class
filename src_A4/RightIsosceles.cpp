@@ -6,8 +6,11 @@
  */
 
 #include <cmath>
+#include "RightIsosceles.h"
+#include "Canvas.h"
+#include "Shape.h"
 
-RightIsosceles::RightIsosceles(int h, std::string description) {
+RightIsosceles::RightIsosceles(int h, std::string description) : Shape("Right Isosceles", description) {
 }
 
 int RightIsosceles::getH() const {
@@ -48,7 +51,7 @@ int RightIsosceles::vExtent() {
 	getH();
 }
 
-void RightIsosceles::draw() {
+void RightIsosceles::draw(int c, int r, Canvas& canvas, char ch) const {
 }
 
 

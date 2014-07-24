@@ -6,9 +6,11 @@
  */
 
 #include "Rhombus.h"
+#include "Canvas.h"
+#include "Shape.h"
 #include <cmath>
 
-Rhombus::Rhombus(int h, std::string description) {
+Rhombus::Rhombus(int h, std::string description) : Shape("Rhombus", description) {
 	setD(h);
 }
 
@@ -54,6 +56,6 @@ int Rhombus::vExtent() {
 	return getD();
 }
 
-void Rhombus::draw() {
+void Rhombus::draw(int c, int r, Canvas& canvas, char ch) const {
 }
 

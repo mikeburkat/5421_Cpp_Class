@@ -9,20 +9,19 @@
 #define SHAPE_H_
 
 #include <string>
+#include "Canvas.h"
 
 class Shape {
 
 private:
 	static int shapeID;
 
-
-protected:
 	int id; // const?
 	std::string genericName; // const?
 	std::string description;
 
 public:
-	Shape();
+	Shape(std::string, std::string);
 
 	int getId();
 	std::string getGenericName();
@@ -32,14 +31,14 @@ public:
 
 	std::string toString();
 
-	virtual void scale(int);
-	virtual double geoArea();
-	virtual double geoPerimeter();
-	virtual int scrArea();
-	virtual int scrPerimeter();
-	virtual int hExtent();
-	virtual int vExtent();
-	virtual void draw();
+	virtual void scale(int) = 0;
+	virtual double geoArea() = 0;
+	virtual double geoPerimeter() = 0;
+	virtual int scrArea() = 0;
+	virtual int scrPerimeter() = 0;
+	virtual int hExtent() = 0;
+	virtual int vExtent() = 0;
+	virtual void draw(int c, int r, Canvas& canvas, char ch = '*') const = 0;
 
 };
 
