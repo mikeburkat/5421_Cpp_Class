@@ -19,7 +19,34 @@ Canvas::Canvas(int col, int row) {
 }
 
 void Canvas::clear(char cc) {
-	grid = std::vector,.
+
+	for (auto& row : this->grid) {
+		for (auto& col : row) {
+			col = cc;
+		}
+	}
+}
+
+int Canvas::geth() const {
+	if (grid.size() > 0)
+		return grid.at(0).size();
+	return 0;
+}
+
+int Canvas::getw() const {
+	return grid.size();
+}
+
+char Canvas::put(int c, int r, char ch) {
+	grid.at(r).at(c) = ch;
+}
+
+char Canvas::get(int c, int r) const {
+	return grid.at(r).at(c);
+}
+
+void Canvas::decorate() {
+
 }
 
 std::ostream& operator <<(std::ostream& out, Canvas& c) {
@@ -30,7 +57,6 @@ std::ostream& operator <<(std::ostream& out, Canvas& c) {
 		}
 		std::cout << std::endl;
 	}
-
 	return out;
 }
 
@@ -41,4 +67,6 @@ int main() {
 	std::cout << c << std::endl;
 
 
+
+	return 0;
 }

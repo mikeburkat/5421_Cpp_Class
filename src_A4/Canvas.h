@@ -18,7 +18,12 @@ private:
 
 public:
 	Canvas(int, int);
-void clear(char);
+	void clear(char = ' ');
+	int geth() const;
+	int getw() const;
+	virtual char put(int, int, char ch = '*');
+	virtual char get(int, int) const;
+	virtual void decorate();
 
 
 
