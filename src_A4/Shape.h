@@ -40,6 +40,7 @@ public:
 	virtual int vExtent() = 0;
 	virtual void draw(int c, int r, Canvas& canvas, char ch = '*') const = 0;
 
+	friend std::ostream& operator<<(std::ostream&, Shape&);
 };
 
 

@@ -7,6 +7,9 @@
 
 #include "Shape.h"
 #include <iostream>
+#include <typeinfo>
+#include <sstream>
+#include <iomanip>
 
 int Shape::shapeID = 0;
 
@@ -33,5 +36,31 @@ void Shape::setDescription(std::string description) {
 }
 
 std::string Shape::toString() {
-	std::cout << "toString()" << std::endl;
+
+	std::stringstream ss;
+
+	ss << "Shape Information" << std::endl;
+	ss << "-----------------" << std::endl;
+	ss << "Type of this:  " << typeid(this).name() << std::endl;
+	ss << "Type of *this: " << typeid(*this).name() << std::endl;
+	ss << "Generic Name:  " << getGenericName() << std::endl;
+	ss << "Description:   " << getDescription() << std::endl;
+	ss << "id:            " << getId() << std::endl;
+	ss << "H extent:      " << this->hExtent() << std::endl;
+	ss << "V extent:      " << this->vExtent() << std::endl;
+	ss << "Scr area:      " << this->scrArea() << std::endl;
+	ss << "Geo area:      " << std::fixed << std::setprecision(2) << this->geoArea() << std::endl;
+	ss << "Scr perimeter: " << this->scrPerimeter() << std::endl;
+	ss << "Geo perimeter: " << this->geoPerimeter() << std::endl;
+
+	return ss.str();
 }
+
+
+std::ostream& operator <<(std::ostream& out, Shape& s) {
+
+	out << s.toString() << std::endl;
+
+	return out;
+}
+

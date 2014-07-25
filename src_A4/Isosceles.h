@@ -11,16 +11,16 @@
 #include "Canvas.h"
 #include "Shape.h"
 
-class Isoceles: public Shape {
+class Isosceles: public Shape {
 
 private:
 	int h;
 
 public:
-	Isoceles(int, std::string = "Generic Isoceles Triangle");
+	Isosceles(int, std::string = "Generic Isoceles Triangle");
 	int getH() const;
 	void setH(int h);
-	int getB();
+	int getB() const;
 
 	virtual void scale(int) override;
 	virtual double geoArea() override;

@@ -19,7 +19,7 @@ int Rhombus::getD() const {
 }
 
 void Rhombus::setD(int d) {
-	if ( d%2 != 0 ) {
+	if ( d%2 == 0 ) {
 		d++;
 	}
 	this->d = d;
@@ -27,7 +27,7 @@ void Rhombus::setD(int d) {
 
 void Rhombus::scale(int n) {
 	if (getD() + n > 0) {
-		setD(getD() + n);
+		setD(getD() + n * 2);
 	}
 }
 
@@ -57,5 +57,20 @@ int Rhombus::vExtent() {
 }
 
 void Rhombus::draw(int c, int r, Canvas& canvas, char ch) const {
+	for (int i = 0; i < getD() ; i++) {
+		int stars = 0;
+
+		if (i < (getD() / 2) ) stars = i * 2 + 1;
+		else if (i == getD() / 2) stars = getD();
+		else stars = ( getD() - (i + 1) ) * 2 + 1;
+
+		int start = (getD() / 2) - (stars / 2);
+
+		for (int j = start; j < stars + start; j++) {
+			canvas.put(c+j, r+i, ch);
+		}
+
+
+	}
 }
 

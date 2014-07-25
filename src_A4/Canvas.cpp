@@ -39,7 +39,8 @@ int Canvas::getw() const {
 }
 
 void Canvas::put(int c, int r, char ch) {
-	grid.at(r).at(c) = ch;
+	if (r < geth() && c < getw())
+		grid.at(r).at(c) = ch;
 }
 
 char Canvas::get(int c, int r) const {

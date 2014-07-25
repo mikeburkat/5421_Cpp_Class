@@ -24,7 +24,7 @@ void BorderedCanvas::put(int c, int r, char ch) {
 	c++;
 	r++;
 //	std::cout << "put: " << c << ":" << r << " h: " << geth() - 1 << " w: " << getw() -1 << std::endl;
-	if (c >= 1 && c <= getw() - 2 && r >= 1 && r <= geth() - 2) {
+	if (c >= 1 && c <= getw() - 2 && r >= 1 && r < geth() - 1) {
 		Canvas::put(c, r, ch);
 	}
 }
@@ -33,7 +33,7 @@ char BorderedCanvas::get(int c, int r) const {
 	c++;
 	r++;
 //	std::cout << "get: " << c << ":" << r << std::endl;
-	if (c >= 1 && c <= getw() - 2 && r >= 1 && r <= geth() - 2) {
+	if (c >= 1 && c <= getw() - 2 && r >= 1 && r < geth() - 1) {
 		return Canvas::get(c, r);
 	}
 	return ' ';

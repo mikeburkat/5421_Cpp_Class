@@ -53,12 +53,19 @@ int Rectangle::scrPerimeter() {
 }
 
 int Rectangle::hExtent() {
-	getW();
+	return getW();
 }
 
 int Rectangle::vExtent() {
-	getH();
+	return getH();
 }
 
 void Rectangle::draw(int c, int r, Canvas& canvas, char ch) const {
+
+	for (int i = 0; i < getW(); i++) {
+		for (int j = 0; j < getH(); j++) {
+			canvas.put(c+i, r+j, ch);
+		}
+	}
+
 }

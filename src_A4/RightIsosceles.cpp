@@ -10,7 +10,7 @@
 #include "Canvas.h"
 #include "Shape.h"
 
-RightIsosceles::RightIsosceles(int h, std::string description) : Shape("Right Isosceles", description) {
+RightIsosceles::RightIsosceles(int h, std::string description) : Shape("Right Isosceles", description), h(h) {
 }
 
 int RightIsosceles::getH() const {
@@ -44,14 +44,20 @@ int RightIsosceles::scrPerimeter() {
 }
 
 int RightIsosceles::hExtent() {
-	getH();
+	return getH();
 }
 
 int RightIsosceles::vExtent() {
-	getH();
+	return getH();
 }
 
 void RightIsosceles::draw(int c, int r, Canvas& canvas, char ch) const {
+	for (int i = 0; i < getH(); i++) {
+		for (int j = 0; j < getH() && j <= i; j++) {
+//			std::cout << getH() << ", " << c+i << ":" << c+j << std::endl;
+			canvas.put(c+j, r+i, ch);
+		}
+	}
 }
 
 
