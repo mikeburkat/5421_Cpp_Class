@@ -13,8 +13,9 @@
 
 Canvas::Canvas(int col, int row) {
 
-	std::vector<char> rows(row, ' ');
-	grid.resize( col, rows);
+	std::vector<char> cols(col, ' ');
+	grid.resize( row, cols);
+//	std::cout << col << ":" << row << std::endl;
 
 }
 
@@ -28,16 +29,16 @@ void Canvas::clear(char cc) {
 }
 
 int Canvas::geth() const {
+	return grid.size();
+}
+
+int Canvas::getw() const {
 	if (grid.size() > 0)
 		return grid.at(0).size();
 	return 0;
 }
 
-int Canvas::getw() const {
-	return grid.size();
-}
-
-char Canvas::put(int c, int r, char ch) {
+void Canvas::put(int c, int r, char ch) {
 	grid.at(r).at(c) = ch;
 }
 
@@ -46,7 +47,6 @@ char Canvas::get(int c, int r) const {
 }
 
 void Canvas::decorate() {
-
 }
 
 std::ostream& operator <<(std::ostream& out, Canvas& c) {
@@ -60,13 +60,14 @@ std::ostream& operator <<(std::ostream& out, Canvas& c) {
 	return out;
 }
 
-int main() {
-	Canvas c(2, 2);
-	std::cout << c << std::endl;
-	c.clear('-');
-	std::cout << c << std::endl;
-
-
-
-	return 0;
-}
+//int main() {
+//	Canvas c(5, 10);
+//	c.clear('-');
+//	std::cout << c << std::endl;
+//	c.put(0, 0, '*');
+//	c.put(4, 9, c.get(0, 0));
+//	std::cout << c << std::endl;
+//
+//
+//	return 0;
+//}
