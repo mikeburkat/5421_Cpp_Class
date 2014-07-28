@@ -7,10 +7,21 @@
 
 #include "FramedCanvas.h"
 
+/**
+ * Constructor taking the width and height of the canvas
+ * it adds the required space to contain the boarders
+ * @param col, number of columns of the canvas
+ * @param row, number of rows of the canvas
+ */
 FramedCanvas::FramedCanvas(int col, int row, std::string title) : title(title), Canvas(col + 2, row + 4){
 	decorate();
 }
 
+/**
+ * Clears the canvas replacing anything on the canvas by the given character
+ * it takes into account the boarders
+ * @param cc, the char to replace anything on the canvas.
+ */
 void FramedCanvas::clear(char ch) {
 	for (int r = 0; r < geth() - 4; r++){
 		for (int c = 0; c < getw() - 2; c++) {
@@ -19,6 +30,13 @@ void FramedCanvas::clear(char ch) {
 	}
 }
 
+/**
+ * Place a char at a column and row location on the canvas
+ * it takes into account the boarders.
+ * @param c, column where the char will be placed
+ * @param r, row where the char will be placed
+ * @param ch, the character that will be placed on the canvas
+ */
 void FramedCanvas::put(int c, int r, char ch) {
 //	std::cout << " f Canvas ";
 	c++;
@@ -29,6 +47,13 @@ void FramedCanvas::put(int c, int r, char ch) {
 	}
 }
 
+/**
+ * Return a char at a column and row location on the canvas
+ * it takes into account the boarders.
+ * @param c, column where the char will be taken
+ * @param r, row where the char will be taken
+ * @return, the character that will be returned on the canvas
+ */
 char FramedCanvas::get(int c, int r) const {
 	c++;
 	r += 3;
@@ -39,6 +64,9 @@ char FramedCanvas::get(int c, int r) const {
 	return ' ';
 }
 
+/**
+ * decorate the canvas, with boarders.
+ */
 void FramedCanvas::decorate() {
 	// add corners
 	Canvas::put(0, 0, '+');
@@ -77,15 +105,5 @@ void FramedCanvas::decorate() {
 	}
 }
 
-//int main() {
-//	FramedCanvas c(10, 20, "A Framed Canvas");
-//	c.clear('0');
-//	std::cout << c << std::endl;
-//	c.put(0, 0, '*');
-//	c.put( 4, 9, c.get(0, 0) );
-//	std::cout << c << std::endl;
-//
-//	return 0;
-//}
 
 
