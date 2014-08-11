@@ -15,13 +15,13 @@ void drawHouse();
 void testShapeAndCamvas();
 
 
-int main()
-{
-   testShapeAndCamvas();
-   drawHouse(); // draw house
-
-   return 0;
-}
+//int main()
+//{
+//   testShapeAndCamvas();
+//   drawHouse(); // draw house
+//
+//   return 0;
+//}
 
 //// Uses different shapes to draw a textual image that looks line a house
 void drawHouse()
