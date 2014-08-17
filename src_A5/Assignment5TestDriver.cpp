@@ -159,19 +159,15 @@ void TestWordVector(istream& inputStream)
 
    WordVector wordvec(inputStream);
    int size = wordvec.size();
-   cout << wordvec.size() << endl;
    wordvec.insert("BBB"); wordvec.insert("BBB"); wordvec.insert("BBB");
    wordvec.insert("AAA"); wordvec.insert("AAA"); wordvec.insert("AAA");
    wordvec.insert("CCC"); wordvec.insert("CCC"); wordvec.insert("CCC");
    assert(wordvec.lookup("BBB") == 3);
    assert(wordvec.lookup("AAA") == 3);
    assert(wordvec.lookup("CCC") == 3);
-   wordvec.print();
-   cout << wordvec.size() << endl;
    assert(wordvec.size() == size + 3);
 
    wordvec.remove("AAA");
-   wordvec.print();
    assert(wordvec.lookup("AAA") == 0);
    wordvec.remove("CCC"); wordvec.remove("CCC");
    assert(wordvec.lookup("CCC") == 0);
